@@ -25,5 +25,5 @@ jobs:
 
       - run: deno --version
 
-      - name: Run tests
+      - name: Run serve
         run: deno task start
