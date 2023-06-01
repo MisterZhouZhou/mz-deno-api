@@ -25,8 +25,5 @@ jobs:
 
       - run: deno --version
 
-      - name: Build Deno Module
-        run: deno run --reload mod.ts
-
       - name: Run tests
         run: deno task start
