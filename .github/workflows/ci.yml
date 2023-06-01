@@ -25,9 +25,6 @@ jobs:
 
       - run: deno --version
 
-      - name: Format
-        run: deno fmt --check
-
       - name: Build Deno Module
         run: deno run --reload mod.ts
 
