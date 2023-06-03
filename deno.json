@@ -1,5 +1,9 @@
 {
   "tasks": {
-    "start": "deno run -A index.ts"
+    "start": "denon run -A --unstable index.ts"
+  },
+  "imports": {
+    "$std/": "https://deno.land/std@0.190.0/",
+    "$oak": "https://deno.land/x/oak@v12.5.0/mod.ts"
   }
 }
