@@ -4,14 +4,10 @@ import router from './api/router/index.ts'
 const port = 8000
 const app = new Application()
 
-// app.use((ctx) => {
-//   ctx.response.body = 'hello world'
-// })
-
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-// chat聊天
+// 前端页面
 app.use(async (ctx) => {
   await ctx.send({
     root: `${Deno.cwd()}/mz-deno-fronted/dist/`,
