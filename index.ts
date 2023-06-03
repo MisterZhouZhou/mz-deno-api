@@ -1,11 +1,10 @@
-import { Application, Router } from "$oak"
-import router from './api/router/index.ts'
+import { Application } from "$oak"
+import routerUse from './api/router/index.ts'
 
 const port = 8000
 const app = new Application()
 
-app.use(router.routes())
-app.use(router.allowedMethods())
+routerUse(app)
 
 // 前端页面
 app.use(async (ctx) => {
