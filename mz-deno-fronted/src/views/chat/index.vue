@@ -69,9 +69,9 @@ if (!route.query.name) {
 }
 
 function initSocket() {
-  const host = import.meta.env.PROD ? window.location.host : 'localhost:8000'
+  const host = import.meta.env.PROD ? `wss://${window.location.host}` : 'ws://localhost:8000'
   socket = new WebSocket(
-    `ws://${host}/ws`,
+    `${host}/ws`,
   );
   socket.onopen = onConnectionOpen
   socket.onmessage = onMessageReceived
