@@ -1,9 +1,11 @@
 {
   "tasks": {
-    "start": "denon run -A --unstable index.ts"
+    "start": "denon run --allow-net --allow-read --allow-write index.ts"
   },
   "imports": {
     "$std/": "https://deno.land/std@0.190.0/",
-    "$oak": "https://deno.land/x/oak@v12.5.0/mod.ts"
+    "$oak": "https://deno.land/x/oak@v12.5.0/mod.ts",
+    "$sqlite": "https://deno.land/x/sqlite@v3.7.2/mod.ts",
+    "$testing/": "https://deno.land/std@0.190.0/testing/"
   }
 }
