@@ -1,15 +1,16 @@
 import { Application } from "$oak"
-import routerUse from './api/router/index.ts'
+import initRouter from './api/router/index.ts'
 
 const port = 8000
 const app = new Application()
 
-routerUse(app)
+// 初始化路由
+initRouter(app)
 
 // 前端页面
 app.use(async (ctx) => {
   await ctx.send({
-    root: `${Deno.cwd()}/mz-deno-fronted/dist/`,
+    root: `${Deno.cwd()}/mz-deno-fronted/dist`,
     index: 'index.html'
   })
 });

@@ -6,6 +6,8 @@
     "$std/": "https://deno.land/std@0.190.0/",
     "$oak": "https://deno.land/x/oak@v12.5.0/mod.ts",
     "$sqlite": "https://deno.land/x/sqlite@v3.7.2/mod.ts",
-    "$testing/": "https://deno.land/std@0.190.0/testing/"
+    "$testing/": "https://deno.land/std@0.190.0/testing/",
+    "$djwt": "https://deno.land/x/djwt@v2.8/mod.ts",
+    "$bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
   }
 }

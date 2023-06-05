@@ -1,6 +1,7 @@
 export const errorCode: Record<number, string> = {
   300: '鉴权失败',
   400: '请求错误',
+  403: '未授权，无权访问',
   500: '服务器内部错误',
 }
 
@@ -11,7 +12,8 @@ export const errorCode: Record<number, string> = {
  * @param msg 响应消息描述
  * @returns 
  */
-export const response = (code: number, data: Record<string, unknown>|Record<string, unknown>[]|null, msg='') => {
+// deno-lint-ignore no-explicit-any
+export const response = (code: number, data: any=null, msg='') => {
   const errMsg = msg ? msg : (errorCode[code] || '' )
   return {
     code,

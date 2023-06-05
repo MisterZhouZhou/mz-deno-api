@@ -1,11 +1,4 @@
-/*
-* @Author: misterzhou
-* @Date: 2023-06-02 13:37:41
- * @LastEditTime: 2023-06-03 22:21:31
- * @LastEditors: misterzhou
- * @FilePath: /mz-deno-api/api/controllers/socket.ts
-* @Description: socket处理
-*/
+// socket控制器
 import { Context } from "$oak"
 import { IUser, IMessage } from '../types/chat.ts'
 
