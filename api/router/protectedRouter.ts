@@ -5,6 +5,7 @@ import { Router } from "$oak"
 const protectedRouter = new Router({
   prefix: '/api'
 })
+
 protectedRouter.get('/hello1', (ctx) => {
   ctx.response.body = 'api hello'
 })

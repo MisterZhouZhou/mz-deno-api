@@ -14,8 +14,8 @@ const messagesMap = new Map<string, IMessage[]>();
 
 const socket = async (ctx : Context) => {
   const socket = await ctx.upgrade()
-  const uuidNumber = new Date().getTime() + Math.floor(Math.random() * 100000)
-  const uuid = uuidNumber.toString()
+  // const uuidNumber = new Date().getTime() + Math.floor(Math.random() * 100000)
+  const uuid = crypto.randomUUID()
   /// socket开始监听
   socket.onopen = () => {
     // console.log('$---socket.onopen');

@@ -3,6 +3,11 @@ import { hash, response, tokenHelper } from '../utils/index.ts';
 
 // 登录控制器
 export default {
+  /**
+   * 登录， POST /login
+   * @param ctx 
+   * @returns 
+   */
   async login(ctx: Context) {
     const { value } = await ctx.request.body({ type: 'json'})
     const { name, password } = await value
@@ -16,7 +21,6 @@ export default {
       name,
       password: pwd,
     })
-
     ctx.response.body = response(200, {
       name,
       token

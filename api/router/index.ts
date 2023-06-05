@@ -7,13 +7,11 @@ import loginController from '../controllers/login.ts';
 
 // global
 const router = new Router()
+
 // socket聊天
 router.get('/ws', socket)
 // login
 router.post('/login', loginController.login)
-router.get('/hello', (ctx) => {
-  ctx.response.body = 'hello11'
-})
 
 function use(app: Application) {
   app.use(router.routes())
