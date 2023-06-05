@@ -4,6 +4,7 @@ import protectedRouter from './protectedRouter.ts'
 import socket from '../controllers/socket.ts'
 import authorization from '../middlewares/authorization.ts'
 import loginController from '../controllers/login.ts';
+import { AppState } from "../types/app.ts";
 
 // global
 const router = new Router()
@@ -13,7 +14,7 @@ router.get('/ws', socket)
 // login
 router.post('/login', loginController.login)
 
-function use(app: Application) {
+function use(app: Application<AppState>) {
   app.use(router.routes())
   app.use(router.allowedMethods())
   app.use(apiRouter.routes())

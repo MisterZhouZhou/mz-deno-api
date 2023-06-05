@@ -1,13 +1,16 @@
 {
   "tasks": {
-    "start": "denon run --allow-net --allow-read --allow-write index.ts"
+    "start": "denon run -A index.ts"
   },
   "imports": {
     "$std/": "https://deno.land/std@0.190.0/",
     "$oak": "https://deno.land/x/oak@v12.5.0/mod.ts",
+    "$oakSession": "https://deno.land/x/oak_sessions@v4.1.4/mod.ts",
+    "$nanoid": "https://deno.land/x/nanoid@v3.0.0/mod.ts",
     "$sqlite": "https://deno.land/x/sqlite@v3.7.2/mod.ts",
     "$testing/": "https://deno.land/std@0.190.0/testing/",
     "$djwt": "https://deno.land/x/djwt@v2.8/mod.ts",
-    "$bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
+    "$bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+    "$canvas": "https://deno.land/x/canvas@v1.4.1/mod.ts"
   }
 }
