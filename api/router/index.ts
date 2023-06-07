@@ -3,7 +3,7 @@ import apiRouter from './apiRouter.ts'
 import protectedRouter from './protectedRouter.ts'
 import socket from '../controllers/socket.ts'
 import authorization from '../middlewares/authorization.ts'
-import loginController from '../controllers/login.ts';
+import loginController from '../controllers/LoginController.ts';
 import { AppState } from "../types/app.ts";
 
 // global

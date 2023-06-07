@@ -11,6 +11,7 @@
     "$testing/": "https://deno.land/std@0.190.0/testing/",
     "$djwt": "https://deno.land/x/djwt@v2.8/mod.ts",
     "$bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
-    "$canvas": "https://deno.land/x/canvas@v1.4.1/mod.ts"
+    "$canvas": "https://deno.land/x/canvas@v1.4.1/mod.ts",
+    "$qrcode": "https://deno.land/x/qrcode@v2.0.0/mod.ts"
   }
 }

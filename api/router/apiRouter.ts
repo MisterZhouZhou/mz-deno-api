@@ -1,5 +1,8 @@
 import { Router } from "$oak"
-import CaptchaController from '../controllers/captcha.ts'
+import CaptchaController from '../controllers/CaptchaController.ts'
+import PlaceholderController from '../controllers/PlaceholderController.ts'
+import QrcodeController from "../controllers/QrcodeController.ts";
+import ShortLinkController from "../controllers/ShortLinkController.ts";
 import { AppState } from "../types/app.ts";
 
 // 使用session
@@ -13,5 +16,18 @@ apiRouter.get('/hello', (ctx) => {
 // 图形验证码
 apiRouter.get('/captcha', CaptchaController.create)
 apiRouter.post('/verify', CaptchaController.verify)
+
+// 生成占位图
+apiRouter.get("/placeholder/:size", PlaceholderController.create)
+
+// 短链生成器
+apiRouter.get("/short", ShortLinkController.create)
+apiRouter.get("/short/:url", ShortLinkController.getUrl)
+
+// 生成二维码
+/// 生成二维码base64格式
+apiRouter.get('/qrcode', QrcodeController.generate)
+/// 生成二维码html格式
+apiRouter.get('/qrcode/show', QrcodeController.showQrcode)
 
 export default apiRouter
