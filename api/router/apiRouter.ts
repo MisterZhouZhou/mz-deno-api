@@ -2,6 +2,7 @@ import { Router } from "$oak"
 import CaptchaController from '../controllers/CaptchaController.ts'
 import PlaceholderController from '../controllers/PlaceholderController.ts'
 import QrcodeController from "../controllers/QrcodeController.ts";
+import ScreenShootController from "../controllers/ScreenShootController.ts";
 import ShortLinkController from "../controllers/ShortLinkController.ts";
 import { AppState } from "../types/app.ts";
 
@@ -29,5 +30,8 @@ apiRouter.get("/short/:url", ShortLinkController.getUrl)
 apiRouter.get('/qrcode', QrcodeController.generate)
 /// 生成二维码html格式
 apiRouter.get('/qrcode/show', QrcodeController.showQrcode)
+
+// 网页截图 不同尺寸，不同类型
+apiRouter.get('/screenShoot', ScreenShootController.screenShoot)
 
 export default apiRouter

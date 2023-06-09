@@ -1,7 +1,7 @@
 import { Session } from '$oakSession';
 import { Application } from "$oak"
 import initRouter from './api/router/index.ts'
-import notFound from './api/middlewares/404.ts'
+import DenoAPIMiddleWares from './api/middlewares/index.ts'
 import { AppState } from "./api/types/app.ts";
 
 const port = 8000
@@ -14,7 +14,7 @@ app.use(Session.initMiddleware())
 initRouter(app)
 
 // 404
-app.use(notFound)
+app.use(DenoAPIMiddleWares.notFound())
 
 console.log('service run at： http://localhost:8000');
 await app.listen({ port })

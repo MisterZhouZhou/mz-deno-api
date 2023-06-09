@@ -2,8 +2,8 @@
 import { Context, Next } from '$oak';
 import { tokenHelper, response } from '../utils/index.ts';
 
-export default {
-  async auth(ctx: Context, next: Next) {
+export function auth() {
+  return async(ctx: Context, next: Next) => {
     // 从headers中获取authorization token
     const authorization = await ctx.request.headers.get('Authorization')
     if (!authorization) {

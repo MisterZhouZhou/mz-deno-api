@@ -1,26 +1,19 @@
-import { Application, Router } from '$oak';
+import { Application } from '$oak';
+import globalRouter from './globalRouter.ts'
 import apiRouter from './apiRouter.ts'
 import protectedRouter from './protectedRouter.ts'
-import socket from '../controllers/socket.ts'
-import authorization from '../middlewares/authorization.ts'
-import loginController from '../controllers/LoginController.ts';
+import DenoAPIMiddleWares from '../middlewares/index.ts'
 import { AppState } from "../types/app.ts";
 
-// global
-const router = new Router()
-
-// socket聊天
-router.get('/ws', socket)
-// login
-router.post('/login', loginController.login)
-
 function use(app: Application<AppState>) {
-  app.use(router.routes())
-  app.use(router.allowedMethods())
+  // global
+  app.use(globalRouter.routes())
+  app.use(globalRouter.allowedMethods())
+  // public
   app.use(apiRouter.routes())
   app.use(apiRouter.allowedMethods())
   // 授权中间件
-  app.use(authorization.auth)
+  app.use(DenoAPIMiddleWares.auth())
   app.use(protectedRouter.routes())
   app.use(protectedRouter.allowedMethods())
 }

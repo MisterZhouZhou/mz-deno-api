@@ -1,5 +1,7 @@
 import { Context } from '$oak';
 
-export default (ctx: Context) => {
-  ctx.response.body = 'not found'
+export function notFound() {
+  return (ctx: Context) => {
+    ctx.response.body = 'not found'
+  }
 }
