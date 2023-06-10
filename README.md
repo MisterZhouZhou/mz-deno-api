@@ -70,6 +70,55 @@ curl  -X POST \
   "password": "123456"
 }'
 ```
+### /upload
+接口描述：
+* 文件上传接口
+
+请求方式：
+* POST http://localhost:8000/upload
+
+请求参数：
+* 无
+
+请求示例：
+```ts
+curl  -X POST \
+  'http://localhost:8000/upload' \
+  --header 'Accept: */*' \
+  --header 'User-Agent: Thunder Client (https://www.thunderclient.com)' \
+  --form 'file=@/Users/zhouwei/Desktop/WorkSpace/Deno/mz-deno-api/deno.json'
+```
+
+### /uploads/:file
+接口描述：
+* 获取文件预览接口
+
+请求方式：
+* GET http://localhost:8000/uploads/xxx.png
+
+请求参数：
+* 无
+
+请求示例：
+```ts
+http://localhost:8000/uploads/xxx.png
+```
+
+### /downloads
+接口描述：
+* 文件下载接口
+
+请求方式：
+* POST http://localhost:8000/downloads/xx.png
+
+请求参数：
+* 无
+
+请求示例：
+```ts
+http://localhost:8000/downloads/xxx.png
+```
+
 ### /api/captcha
 接口描述：
 * 生成图形验证码接口
@@ -197,6 +246,25 @@ http://localhost:8000/api/qrcode?data=nihao&size=300
 请求示例：
 ```js
 http://localhost:8000/api/qrcode/show?data=nihao&size=300
+```
+
+### /api/screenShoot
+接口描述：
+* 屏幕截图为图片或者pdf
+
+请求方式：
+* GET http://localhost:8000/api/screenShoot
+
+请求参数：
+* 无
+
+请求示例：
+```ts
+// 指定地址、设备和类型
+http://localhost:8000/api/screenShoot?url=http://www.baidu.com&device=iPhone 6&type=pdf
+
+// 默认为图片， 指定设备和地址
+http://localhost:8000/api/screenShoot?url=http://www.baidu.com&device=iPhone 6
 ```
 
 ## 鉴权api

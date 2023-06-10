@@ -66,7 +66,7 @@ export function upload(path='uploads', options:IOptions={ randomName: true }) {
       let newFileName = name
        // 随机文件名
        if (options.randomName) {
-        newFileName = `${crypto.randomUUID() }-${name}`
+        newFileName = `${crypto.randomUUID()}-${name}`
       }
       // 带后缀的文件名
       const newFileFullName = `${newFileName}.${ext.toLowerCase()}`
