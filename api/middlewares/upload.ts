@@ -39,6 +39,56 @@ const defaultIOptions: IOptions = {
 // 从请求头中匹配文件数据
 const boundaryRegex = /^multipart\/form-data;\sboundary=(?<boundary>.*)$/;
 
+// 同步创建文件上传目录
+function uploadFileDirPath(uploadPath: string) {
+  if (uploadPath) {
+    // 同步创建目录
+    ensureDirSync(uploadPath);
+  }
+}
+
+// 过滤文件上传key
+function filterFileKeys(files: string[]|undefined, fileList: FormDataFile[]):FormDataFile[] {
+  if (!files) {
+    return fileList
+  }
+  const foundedFiles: FormDataFile[] = []
+  files.forEach(name => {
+    const foundedFile = fileList.find((file: FormDataFile) => file.name === name);
+    if (foundedFile) {
+      foundedFiles.push(foundedFile);
+    }
+  });
+  return foundedFiles
+}
+
+// 过滤文件后缀名
+function filterFileExts(exts: string[]|undefined, fileList: FormDataFile[]): FormDataFile[] {
+  if (!exts) {
+    return fileList
+  }
+  const foundedFiles: FormDataFile[] = []
+  exts.forEach(extName => {
+    const foundedFile = fileList.find((file: FormDataFile) => {
+      // 获取文件名称及扩展
+      const [_, ext] = file.originalName.split('.')
+      return ext === extName
+    });
+    if (foundedFile) {
+      foundedFiles.push(foundedFile);
+    }
+  });
+  return foundedFiles
+}
+
+// 处理最大文件数
+function filterFileMaxNumber(maxFileNumber: number|undefined, fileList: FormDataFile[]) {
+  if (maxFileNumber && maxFileNumber > 0) { 
+    return fileList.splice(0, maxFileNumber)
+  }
+  return fileList
+}
+
 export function upload(path='uploads', options:IOptions=defaultIOptions) {
   return async(ctx: any, next: CallableFunction) => {
     if (options) {
@@ -69,41 +119,22 @@ export function upload(path='uploads', options:IOptions=defaultIOptions) {
     const fileErrors: IFileError[] = []
     // 上传文件的路径
     const uploadPath = `${Deno.cwd()}/${path}`
-    if (uploadPath) {
-      // 同步创建目录
-      ensureDirSync(uploadPath);
-    }
+    // 创建目录
+    uploadFileDirPath(uploadPath)
+
     // 筛选文件name, 上传时的key
-    if (options.files) {
-      // 查找的临时结果
-      const findedFiles: FormDataFile[] = []
-      options.files.forEach(name => {
-        const findedFile = fileList.find((file: FormDataFile) => file.name === name);
-        if (findedFile) {
-          findedFiles.push(findedFile);
-        }
-      });
-      fileList = findedFiles;
-    }
+    const foundedFiles: FormDataFile[] = filterFileKeys(options.files, fileList)
+    fileList = foundedFiles;
+
     // 处理扩展名
-    if (options.exts) {
-      const findedFiles: FormDataFile[] = []
-      options.exts.forEach(extName => {
-        const findedFile = fileList.find((file: FormDataFile) => {
-          // 获取文件名称及扩展
-          const [_, ext] = file.originalName.split('.')
-          return ext === extName
-        });
-        if (findedFile) {
-          findedFiles.push(findedFile);
-        }
-      });
-      fileList = findedFiles;
-    }
+    const foundedFileExts: FormDataFile[] = filterFileExts(options.exts, fileList)
+    fileList = foundedFileExts;
+
     // 处理文件最大数量
-    if (options.maxFile) {
-      fileList = fileList.splice(0, options.maxFile)
-    }
+    const foundedFileMaxNumbers: FormDataFile[] = filterFileMaxNumber(options.maxFile, fileList)
+    fileList = foundedFileMaxNumbers;
+
+    console.log(fileList);
     // 遍历最终结果文件，传递到下一个中间件
     for (const file of fileList) {
       // 获取临时文件的文件状态
@@ -142,6 +173,7 @@ export function upload(path='uploads', options:IOptions=defaultIOptions) {
       }
       retFileList.push(fileObj)
     }
+    // 向下一个中间件暴漏数据
     ctx['uploads'] = {
       'files': retFileList,
       'errors': fileErrors.length > 0 ? fileErrors : null

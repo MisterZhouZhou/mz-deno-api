@@ -14,7 +14,7 @@ router.post('/login', loginController.login)
 
 // uploads资源访问
 /// 上传文件
-router.post('/upload', DenoAPIMiddleWares.upload("uploads", { files: ['file2'], exts: ['json'] }) , UploadController.upload)
+router.post('/upload', DenoAPIMiddleWares.upload("uploads") , UploadController.upload)
 /// 文件访问
 router.get('/uploads/:file', UploadController.getUploadsFile)
 /// 文件下载
