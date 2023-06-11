@@ -1,5 +1,5 @@
 // 文件上传中间件
-import { FormDataFile, Context } from '$oak'
+import { FormDataFile } from '$oak'
 import { join } from '$std/path/mod.ts';
 import { ensureDirSync, moveSync } from '$std/fs/mod.ts';
 
@@ -15,24 +15,37 @@ export interface IFile {
 }
 
 export interface IOptions {
-  // max_file?: number,
-  // files?: string[],
-  // extensions?: string[],
-  // max_file_size?: number,
-  randomName: boolean // 开启随机文件名
-  // datetime_subdir?: boolean,
-  // move?: boolean,
-  // errors?: {
-  //     max_file?: string,
-  //     extension?: string,
-  //     size?: string
-  // }
+  maxFileSize?: number, // 文件最大尺寸
+  randomName?: boolean // 开启随机文件名
+  maxFile?: number|undefined, // 最大文件数量
+  files?: string[]|undefined, // 文件上传的名称file
+  exts?: string[]|undefined, // 文件扩展
 }
 
-export function upload(path='uploads', options:IOptions={ randomName: true }) {
+export interface IFileError {
+  file: string // 报错对应的上传文件名称
+  msg: string // 错误描述
+}
+
+// 默认值
+const defaultIOptions: IOptions = {
+  maxFileSize: 5 * 1024 * 1024, // 单位b, 默认限制大小5M
+  randomName: true,
+  files: undefined,
+  maxFile: undefined,
+  exts: undefined
+};
+
+// 从请求头中匹配文件数据
+const boundaryRegex = /^multipart\/form-data;\sboundary=(?<boundary>.*)$/;
+
+export function upload(path='uploads', options:IOptions=defaultIOptions) {
   return async(ctx: any, next: CallableFunction) => {
-    // 从请求头中匹配文件数据
-    const boundaryRegex = /^multipart\/form-data;\sboundary=(?<boundary>.*)$/;
+    if (options) {
+      options = {
+        ...defaultIOptions , ...options,
+      };
+    }
     // 请求头
     const contentType = ctx.request.headers.get('content-type')
     if (!contentType || !contentType.match(boundaryRegex)) {
@@ -45,22 +58,64 @@ export function upload(path='uploads', options:IOptions={ randomName: true }) {
     const body = await ctx.request.body({ type: "form-data" });
     const formData = await body.value.read();
     if (!formData.files) {
-      console.warn('当前请求未上传任何文件');
-      await next()
-      return
+      ctx.throw(
+        422,
+        '当前请求未上传任何文件',
+      );
     }
     // 结果文件列表
     const retFileList: IFile[] = []
-    const fileList: FormDataFile[] = formData.files
+    let fileList: FormDataFile[] = formData.files
+    const fileErrors: IFileError[] = []
     // 上传文件的路径
     const uploadPath = `${Deno.cwd()}/${path}`
     if (uploadPath) {
       // 同步创建目录
       ensureDirSync(uploadPath);
     }
+    // 筛选文件name, 上传时的key
+    if (options.files) {
+      // 查找的临时结果
+      const findedFiles: FormDataFile[] = []
+      options.files.forEach(name => {
+        const findedFile = fileList.find((file: FormDataFile) => file.name === name);
+        if (findedFile) {
+          findedFiles.push(findedFile);
+        }
+      });
+      fileList = findedFiles;
+    }
+    // 处理扩展名
+    if (options.exts) {
+      const findedFiles: FormDataFile[] = []
+      options.exts.forEach(extName => {
+        const findedFile = fileList.find((file: FormDataFile) => {
+          // 获取文件名称及扩展
+          const [_, ext] = file.originalName.split('.')
+          return ext === extName
+        });
+        if (findedFile) {
+          findedFiles.push(findedFile);
+        }
+      });
+      fileList = findedFiles;
+    }
+    // 处理文件最大数量
+    if (options.maxFile) {
+      fileList = fileList.splice(0, options.maxFile)
+    }
+    // 遍历最终结果文件，传递到下一个中间件
     for (const file of fileList) {
       // 获取临时文件的文件状态
       const stat = await Deno.stat(file.filename as string)
+      // 处理文件大小校验
+      if (options.maxFileSize && options.maxFileSize < stat.size) {
+        fileErrors.push({
+          file: file.originalName,
+          msg: '文件超过尺寸限制'
+        });
+        continue
+      }
       // 获取文件名称及扩展
       const [name, ext] = file.originalName.split('.')
       let newFileName = name
@@ -76,7 +131,7 @@ export function upload(path='uploads', options:IOptions={ randomName: true }) {
         name: newFileName,
         ext: ext.toLowerCase(),
         fileName: newFileFullName,
-        size: stat.size / 1048576,
+        size: stat.size / 1048576, // M
         tmpUrl: file.filename,
         path: join(uploadPath, newFileFullName),
         url: `${path}/${newFileFullName}`
@@ -87,7 +142,10 @@ export function upload(path='uploads', options:IOptions={ randomName: true }) {
       }
       retFileList.push(fileObj)
     }
-    ctx['uploadFiles'] = retFileList
+    ctx['uploads'] = {
+      'files': retFileList,
+      'errors': fileErrors.length > 0 ? fileErrors : null
+    }
     await next()
   }
 }

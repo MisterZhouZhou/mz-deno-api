@@ -10,9 +10,16 @@ import { IFile } from './../middlewares/upload.ts';
  */
 const upload = (ctx: any) => {
   const retArr:Omit<IFile, 'originalName'|'tmpUrl'|'path'>[] = []
-  if (ctx.uploadFiles) {
-    const uploadFiles = ctx.uploadFiles as IFile[]
-    for (const uploadFile of uploadFiles) {
+  const { files, errors } = ctx.uploads
+  // 处理错误
+  if (errors) {
+    ctx.response.body = response(400, errors)
+    return
+  }
+  // 没有错误
+  if (files) {
+    const uploadFilesList = files as IFile[]
+    for (const uploadFile of uploadFilesList) {
       retArr.push({
         fileName: uploadFile.fileName,
         name: uploadFile.name,
