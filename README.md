@@ -1,5 +1,9 @@
 # mz-deno-api
 
+## 接口文档
+接口文档地址：[texts](https://mz-deno-front.deno.dev/#/docs)
+
+
 ## 公共api
 ### /ws
 接口描述：
