@@ -256,7 +256,10 @@ http://localhost:8000/api/qrcode/show?data=nihao&size=300
 * GET http://localhost:8000/api/screenShoot
 
 请求参数：
-* 无
+| 参数名称 | 是否必填 | 类型 | 说明 |
+| -------- | -------- | -------- |-------- |
+| url | 是 | string | 页面地址 |
+| device | 否 | string | 生成图片/pdf的设备尺寸类型，默认iPhone 6 |
 
 请求示例：
 ```ts
