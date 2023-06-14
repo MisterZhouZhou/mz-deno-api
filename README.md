@@ -104,12 +104,12 @@ curl  -X POST \
 http://localhost:8000/uploads/xxx.png
 ```
 
-### /downloads
+### /downloads/:file
 接口描述：
 * 文件下载接口
 
 请求方式：
-* POST http://localhost:8000/downloads/xx.png
+* GET http://localhost:8000/downloads/xx.png
 
 请求参数：
 * 无
