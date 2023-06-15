@@ -274,6 +274,28 @@ http://localhost:8000/api/screenShoot?url=http://www.baidu.com&device=iPhone 6&t
 // 默认为图片， 指定设备和地址
 http://localhost:8000/api/screenShoot?url=http://www.baidu.com&device=iPhone 6
 ```
+### /api/image/resize
+接口描述：
+* 调整图片大小，返回image/png
+
+请求方式：
+* GET http://localhost:8000/api/image/resize?url=&size=100*200&auto=false
+
+请求参数：
+| 参数名称 | 是否必填 | 类型 | 说明 |
+| -------- | -------- | -------- |-------- |
+| url | 是 | string | 页面地址 |
+| size | false | string | 图片的尺寸, 默认100x100 |
+| auto | 否 | string|boolean | 是否自动按比例调整大小, 默认true |
+
+请求示例：
+```ts
+// 默认根据100*100的尺寸并按自动比例调整
+http://localhost:8000/api/image/resize?url=https://images.pexels.com/photos/17172210/pexels-photo-17172210.jpeg
+
+// 按自定义大小生成图片
+http://localhost:8000/api/image/resize?url=https://images.pexels.com/photos/17172210/pexels-photo-17172210.jpeg&size=200x300&auto=false
+```
 
 ## 鉴权api
 ### /api/hello1

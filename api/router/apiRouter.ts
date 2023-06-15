@@ -1,5 +1,6 @@
 import { Router } from "$oak"
 import CaptchaController from '../controllers/CaptchaController.ts'
+import ImageController from "../controllers/ImageController.ts";
 import PlaceholderController from '../controllers/PlaceholderController.ts'
 import QrcodeController from "../controllers/QrcodeController.ts";
 import ScreenShootController from "../controllers/ScreenShootController.ts";
@@ -33,5 +34,8 @@ apiRouter.get('/qrcode/show', QrcodeController.showQrcode)
 
 // 网页截图 不同尺寸，不同类型
 apiRouter.get('/screenShoot', ScreenShootController.screenShoot)
+
+// 调整图片尺寸
+apiRouter.get('/image/resize', ImageController.resize)
 
 export default apiRouter

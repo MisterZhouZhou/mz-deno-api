@@ -15,7 +15,9 @@
     "$qrcode": "https://deno.land/x/qrcode@v2.0.0/mod.ts",
     "$puppeteer": "https://deno.land/x/puppeteer@16.2.0/mod.ts",
     "$mUtils": "https://deno.land/x/m_utils@v1.0.4/mod.ts",
-    "$mOakUpload": "https://deno.land/x/m_oak_upload@v1.0.1/mod.ts"
+    "$mOakUpload": "https://deno.land/x/m_oak_upload@v1.0.1/mod.ts",
+    "$requestParser": "https://deno.land/x/m_oak_request_parser@v1.0.0/mod.ts",
+    "$image": "https://deno.land/x/deno_image@0.0.4/mod.ts"
   },
   "compilerOptions": {
     "noImplicitAny": false
